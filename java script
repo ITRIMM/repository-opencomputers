@@ -1,0 +1,31 @@
+Socket clientSocket = null;
+clientSocket = new Socket("Tim", 4444);
+Socket serverSocket = null;
+serverSocket = new Socket(4444); //Notice no user to connect to this time.
+serverSocket.accept(); //Accept a client.
+PrintWriter out = null;
+BufferedReader in = null;
+Socket clientSocket = null
+clientSocket = new Socket("Tim", 4444);
+//get the socket's ouput
+out=new PrintWriter(clientSocket.getOutputStream(), true); 
+//get the socket's input
+in=new BufferedReader(new inputStreamReader(clientSocket.getInputStream()));
+PrintWriter out = null;
+BufferedReader in = null;
+Socket clientSocket = null;
+String fromServer;
+
+clientSocket = new Socket("Tim", 4444);
+out = new PrintWriter(clientSocket.getOutputStream(), true);
+in = new BufferedReader(new inputStreamReader( clientSocket.getInputStream()));
+
+// Цикл до тех пор, пока есть поступающие сообщения
+while ((fromServer = in.readLine()) != null) { 
+	//Отображаем полученное сообщение
+	System.out.println("Server: " + fromServer); 
+	}
+
+out.close();
+in.close();
+clientSocket.close();
