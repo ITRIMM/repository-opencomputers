@@ -1,0 +1,262 @@
+local rs = component.redstone
+local component = require("component")
+local rs = component.redstone
+
+--You can of course change the variable name:
+local mycomp = require("component")
+local rs = mycomp.redstone
+local component = require("component")
+local colors = require("colors")
+local rs = component.redstone
+rs.setBundledOutput(sides.back, colors.green, rs.getBundledInput(sides.front, colors.blue))
+component.doc(address:string, method:string): string
+component.invoke(address:string, method:string[, ...]): ...
+tostring(component.screen.isOn)
+component.list([filter:string]):function
+local component = require("component")
+-- prints `redstone` for each attached redstone card.
+for _, name in component.list("red") do print(name) end
+local component = require("component")
+local rs0 = component.getPrimary("redstone")
+local rs1 = component.redstone -- syntactic sugar
+print(rs0 == rs1) -- true
+local computer = require("computer")
+if computer.uptime() >= 300 then
+    computer.shutdown(true)
+end
+local computer = require("computer")
+local event = require("event")
+
+function onTimer()
+    computer.shutdown(true)
+end
+event.timer(30, onTimer, 50) --run 50 times, then stop. If it's still not past 300 seconds by then, we've got other things to worry about.
+local internet = require("internet")
+local handle = internet.open("example.com", 1337)
+local data = handle:read(10)
+handle:write("1234")
+handle:close()
+--this is just a basic split function we'll use to split the messages
+function split(data, pat)
+    local ret = {}
+    for i in string.gmatch(data,pat) do
+        table.insert(ret,i)
+    end
+    return ret
+end
+--config
+local nickname = "myircbot"
+local channel = "#mybotchannel"
+
+local net = require("internet")
+local con = net.open("irc.esper.net",6667) --define server / port here, this will connect to the server
+if(con) then
+    local line,png,linesplt,msgfrom = ""
+    while(true) do
+        line = con:read() --read a line from the socket
+        print(line)
+        linesplt = split(line,"[^:]+")
+        if #linesplt >= 2 and string.find(linesplt[2], "No Ident response") ~= nil then
+            print("JOIN")
+            con:write("USER " .. nickname .. " 0 * :" .. nickname .. "\r\n") --con:write(msg) is used to send messages, con:read() will read a line
+            con:write("NICK " .. nickname .. "\r\n") --for IRC, remember to append the \r\n on the end of all messages
+            con:write("JOIN :" .. channel .. "\r\n")
+        elseif linesplt[1] == "PING" or linesplt[1] == "PING " then
+            print("PING")
+            png = split(line,"[^:]+")
+            con:write("PONG :"..png[#png].."\r\n") --respond to pings so we don't get disconnected
+        elseif string.find(linesplt[1], "PRIVMSG #") ~= nil then
+            msgfrom = split(linesplt[1],"[^ ]+")
+            msgfrom = msgfrom[3]
+            con:write("PRIVMSG "..msgfrom.." :"..linesplt[2].."\r\n")
+        end
+    end
+else
+    print("Connection failed.")
+end
+keyboard.keys
+keyboard.keys.numpad0 0x52
+keyboard.keys[0x52]
+numpad0
+Name	MIDI code	Frequency
+A0	21	27,5000
+A#0/Bb0	22	29,1352
+B0	23	30,8677
+C1	24	32,7032
+C#1/Db1	25	34,6478
+D1	26	36,7081
+D#1/Eb1	27	38,8909
+E1	28	41,2034
+F1	29	43,6535
+F#1/Gb1	30	46,2493
+G1	31	48,9994
+G#1/Ab1	32	51,9131
+A1	33	55,0000
+A#1/Bb1	34	58,2705
+B1	35	61,7354
+C2	36	65,4064
+C#2/Db2	37	69,2957
+D2	38	73,4162
+D#2/Eb2	39	77,7817
+E2	40	82,4069
+F2	41	87,3071
+F#2/Gb2	42	92,4986
+G2	43	97,9989
+G#2/Ab2	44	103,826
+A2	45	110,000
+A#2/Bb2	46	116,541
+B2	47	123,471
+C3	48	130,813
+C#3/Db3	49	138,591
+D3	50	146,832
+D#3/Eb3	51	155,563
+E3	52	164,814
+F3	53	174,614
+F#3/Gb3	54	184,997
+G3	55	195,998
+G#3/Ab3	56	207,652
+A3	57	220,000
+A#3/Bb3	58	233,082
+B3	59	246,942
+C4	60	261,626
+C#4/Db4	61	277,183
+D4	62	293,665
+D#4/Eb4	63	311,127
+E4	64	329,628
+F4	65	349,228
+F#4/Gb4	66	369,994
+G4	67	391,995
+G#4/Ab4	68	415,305
+A4	69	440,000
+A#4/Bb4	70	466,164
+B4	71	493,883
+C5	72	523,251
+C#5/Db5	73	554,365
+D5	74	587,330
+D#5/Eb5	75	622,254
+E5	76	659,255
+F5	77	698,456
+F#5/Gb5	78	739,989
+G5	79	783,991
+G#5/Ab5	80	830,609
+A5	81	880,000
+A#5/Bb5	82	932,328
+B5	83	987,767
+C6	84	1046,50
+C#6/Db6	85	1108,73
+D6	86	1174,66
+D#6/Eb6	87	1244,51
+E6	88	1318,51
+F6	89	1396,91
+F#6/Gb6	90	1479,98
+G6	91	1567,98
+G#6/Ab6	92	1661,22
+A6	93	1760,00
+A#6/Bb6	94	1864,66
+B6	95	1975,53
+shell.getAlias(alias: string): string
+Gets the value of a specified alias, if any. If there is no such alias returns nil.
+shell.setAlias(alias: string, value: string or nil)
+Defines a new alias or updates an existing one. Pass nil as the value to remove an alias. Note that aliases are not limited to program names, you can include parameters as well. For example, view is a default alias for edit -r.
+shell.aliases(): function
+Returns an iterator over all known aliases.
+shell.getWorkingDirectory(): string
+Gets the path to the current working directory. This is an alias for os.getenv("PWD").
+shell.setWorkingDirectory(dir: string)
+Sets the current working directory. This is a checked version of os.setenv("PWD", dir).
+shell.getPath(): string
+Gets the search path used by shell.resolve. This can contain multiple paths, separated by colons (:).
+This is an alias for os.getenv("PATH").
+shell.setPath(value: string)
+Sets the search path. Note that this will replace the previous search paths. To add a new path to the search paths, do this:
+shell.setPath(shell.getPath() .. ":/some/path")
+This is an alias for os.setenv("PATH", value).
+shell.resolve(path: string[, ext: string]): string
+Tries to "resolve" a path, optionally also checking for files with the specified extension, in which case path would only contain the name. This first searches the working directory, then all entries in the search path (see getPath/setPath).
+If no file with the exact specified name exists and an extension is provided, it will also check for a file with that name plus the specified extension, i.e. for path .. "." .. ext.
+shell.execute(command: string, env: table[, ...]): boolean ...
+Runs the specified command. This runs the default shell (see os.getenv("SHELL")) and passes the command to it. env is the environment table to use for the shell, and thus for the called program, in case you wish to sandbox it or avoid it cluttering the caller's namespace. Additional arguments are passed directly to the first program started based on the command, so you can pass non-string values to programs.
+Returns values similar to pcall and coroutine.resume: the first returned value is a boolean indicating success or error. In case of errors, the second returned value is a detailed error message. Otherwise the remaining returned values are the values that were returned by the specified program when it terminated.
+shell.parse(...): table, table
+Utility methods intended for programs to parse their arguments. Will return two tables, the first one containing any "normal" parameters, the second containing "options". Options are indicated by a leading -, and all options must only be a single character, since multiple characters following a single - will be interpreted as multiple options. For example, if a program is called like this: program -abC -d arg1 arg2
+And program does local args, options = shell.parse(...), then args is the table {"arg1", "arg2"}, and options is the table {a=true,b=true,C=true,d=true}.
+shell.running([level: number]): string
+Deprecated, use `process.running`.
+This "API" provides a global table to allow you to refer to sides / directions by name, as opposed to their numbers. The underlying number values are identical to Minecraft's internal numbering (as well as the ForgeDirection Enum). This table serves as a two-directional look-up, so you can resolve names to numbers, but also numbers back to a human readable name. For example, sides.top has the value 1, whereas sides[1] has the string value top. A couple of aliases for the side names are available, so it's less likely to accidentally pick the wrong one. These are the basic values:
+
+Bottom (bottom), Number: 0
+Top (top), Number: 1
+Back (back), Number: 2
+Front (front), Number: 3
+Right (right), Number: 4
+Left (left), Number: 5
+The following aliases are defined per default:
+
+Bottom: down, negy
+Top: up, posy
+Back: north, negz
+Front: south, posz, forward
+Right: west, negx
+Left: east, posx
+Useful for setting or getting redstone outputs or inputs, for example:
+
+local component = require("component")
+local sides = require("sides")
+local rs = component.redstone
+rs.setOutput(sides.back, rs.getInput(sides.left))
+term.isAvailable(): boolean
+Returns whether the term API is available for use, i.e. whether a primary GPU an screen are present. In other words, whether term.read and term.write will actually do something.
+term.getCursor(): number, number
+Gets the current position of the cursor.
+term.setCursor(col: number, row: number)
+Sets the cursor position to the specified coordinates.
+term.getCursorBlink(): boolean
+Gets whether the cursor blink is currently enabled, i.e whether the cursor alternates between the actual "pixel" displayed at the cursor position and a fully white block every half second.
+term.setCursorBlink(enabled: boolean)
+Sets whether cursor blink should be enabled or not.
+term.clear()
+Clears the complete screen and resets the cursor position to (1, 1).
+term.clearLine()
+Clears the line the cursor is currently on and resets the cursor's horizontal position to 1.
+term.read([history: table]): string
+Read some text from the terminal, i.e. allow the user to input some text. For example, this is used by the shell and Lua interpreter to read user input. This will make the rest of the current line, starting at the current cursor position, an editable area. It allows input, deletion and navigating to the left and right via the arrow keys and home/end keys.
+The optional history table can be used to provide predefined text that can be cycled through via the up and down arrow keys. It must be a sequence (i.e. the keys must be a gap-less integral interval starting at 1). This is used for the command history in shell and Lua interpreter, for example. If text is entered and confirmed with enter, it will be added to the end of this table.
+The function will return a string if input was successful, or nil if there was no more input (user pressed Ctrl+D or Ctrl+C or the terminal became unavailable).
+Note: io.stdin:read() uses this function.
+Note 2: This will return the entered string with the \n (new line character). If you want only the entered string to be returned, use io.read().
+term.write(value: string[, wrap: boolean])
+Allows writing optionally wrapped text to the terminal starting at the current cursor position, updating the cursor accordingly. It automatically converts tab characters to spaces using text.detab. If wrap is true, it will automatically word-wrap the text. It will scroll the displayed buffer if the cursor exceeds the bottom of the display area, but not if it exceeds the right of the display area (when wrap is false).
+Note: io.stdout:write() uses this function.
+This API provides some more general operations on strings and data serialization into and back from strings.
+
+text.detab(value: string, tabWidth: number): string
+Converts tabs in a string to spaces, while aligning the tags at the specified tab width. This is used for formatting text in term.write, for example.
+text.padRight(value: string, length: number): string
+Pads a string with whitespace on the right up to the specified length.
+text.padLeft(value: string, length: number): string
+Pads a string with whitespace on the left up to the specified length.
+text.trim(value: string): string
+Removes whitespace characters from the start and end of a string.
+text.serialize(value: any except functions): string
+Deprecated, use `serialization.serialize`.
+text.unserialize(value: string): any
+Deprecated, use `serialization.unserialize`.
+Because all strings pass through Java at some point it can be useful to handle them with Unicode support (since Java's internal string representation is UTF-8 encoded). In particular, screens display UTF-8 strings, meaning the related GPU functions expect UTF-8 strings. Also, keyboard input will generally be UTF-8 encoded, especially the clipboard.
+
+However, keep in mind that only a subset of UTF-8 can actually be displayed on screens. Specifically all glyphs defined in code page 437 are supported.
+
+The following functions are provided to allow basic UTF-8 handling:
+
+unicode.char(value: number, ...): string
+UTF-8 aware version of string.char. The values may be in the full UTF-8 range, not just ASCII.
+unicode.len(value: string): number
+UTF-8 aware version of string.len. For example, for Ümläüt it'll return 6, where string.len would return 9.
+unicode.lower(value: string): string
+UTF-8 aware version of string.lower.
+unicode.reverse(value: string): string
+UTF-8 aware version of string.reverse. For example, for Ümläüt it'll return tüälmÜ, where string.reverse would return tälm.
+unicode.sub(value: string, i:number[, j:number]): string
+UTF-8 aware version of string.sub.
+unicode.upper(value: string): string
+UTF-8 aware version of string.upper.
+For example, these are used when files are opened in non-binary mode. The original string functions are used for files opened in binary mode.
