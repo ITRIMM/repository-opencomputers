@@ -1,0 +1,73 @@
+LUA_REGISTRYINDEX
+(index < 0 && abs(index) <= top) ||
+     (index > 0 && index <= stackspace)
+ lua_getfield(L, LUA_GLOBALSINDEX,back-file);
+typedef void * (*lua_Alloc) (void *ud,
+                             void *ptr,
+                             size_t osize,
+                             size_t nsize)
+static void *l_alloc (void *ud, void *ptr, size_t osize,
+                                                size_t nsize) {
+       (void)ud;  (void)osize;  /* not used */
+       if (nsize == 0) {
+         free(ptr);
+         return NULL;
+       }
+       else
+         return realloc(ptr, nsize);
+     }
+lua_CFunction lua_atpanic (lua_State *L, lua_CFunction panicf);
+void lua_call (lua_State *L, int nargs, int nresults);
+lua_getfield(L, LUA_GLOBALSINDEX, "f"); /* function to be called */
+     lua_pushstring(L, "how");                        /* 1st argument */
+     lua_getfield(L, LUA_GLOBALSINDEX, "t");   /* table to be indexed */
+     lua_getfield(L, -1, "x");        /* push result of t.x (2nd arg) */
+     lua_remove(L, -2);                  /* remove 't' from the stack */
+     lua_pushinteger(L, 14);                          /* 3rd argument */
+     lua_call(L, 3, 1);     /* call 'f' with 3 arguments and 1 result */
+     lua_setfield(L, LUA_GLOBALSINDEX, "a");        /* set global 'a' */
+
+typedef int (*lua_CFunction) (lua_State *L);
+
+static int foo (lua_State *L) {
+       int n = lua_gettop(L);    /* number of arguments */
+       lua_Number sum = 0;
+       int i;
+       for (i = 1; i <= n; i++) {
+         if (!lua_isnumber(L, i)) {
+           lua_pushstring(L, "incorrect argument");
+           lua_error(L);
+         }
+         sum += lua_tonumber(L, i);
+       }
+       lua_pushnumber(L, sum/n);        /* first result */
+       lua_pushnumber(L, sum);         /* second result */
+       return 2;                   /* number of results */
+     }
+     
+int lua_checkstack (lua_State *L, int extra);
+void lua_close (lua_State *L);
+
+void lua_concat (lua_State *L, int n);
+
+int lua_cpcall (lua_State *L, lua_CFunction func, void *ud);
+void lua_createtable (lua_State *L, int narr, int nrec);
+int lua_dump (lua_State *L, lua_Writer writer, void *data);
+int lua_equal (lua_State *L, int index1, int index2);
+
+int lua_error (lua_State *L);
+
+int lua_gc (lua_State *L, int what, int data);
+
+LUA_GCSTOP
+LUA_GCSTEP
+LUA_GCSETPAUSE
+LUA_GCSETSTEPMUL
+
+lua_Alloc lua_getallocf
+#define lua_getglobal(L,s)  lua_getfield
+
+
+
+
+
